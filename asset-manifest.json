@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/mario-generator/static/css/main.f855e6bc.css",
-    "main.js": "/mario-generator/static/js/main.46cba974.js",
+    "main.js": "/mario-generator/static/js/main.0c95440c.js",
     "static/js/453.dea21f19.chunk.js": "/mario-generator/static/js/453.dea21f19.chunk.js",
     "static/media/mario_hairShirtBoots.png": "/mario-generator/static/media/mario_hairShirtBoots.5d9902976fb7807a403c.png",
     "index.html": "/mario-generator/index.html",
     "main.f855e6bc.css.map": "/mario-generator/static/css/main.f855e6bc.css.map",
-    "main.46cba974.js.map": "/mario-generator/static/js/main.46cba974.js.map",
+    "main.0c95440c.js.map": "/mario-generator/static/js/main.0c95440c.js.map",
     "453.dea21f19.chunk.js.map": "/mario-generator/static/js/453.dea21f19.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.46cba974.js"
+    "static/js/main.0c95440c.js"
   ]
 }
