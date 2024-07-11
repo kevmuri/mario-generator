@@ -10,13 +10,12 @@ import mario_skin from './mario_skin.png';
 import JsBarcode from "jsbarcode";
 
 const colors = {
-  orange: '#ffa347',
-  red: '#f83800',
-  brown: '#af7f00',
-  blue: '#0099ff',
-  green: '#00cc66',
-  white: '#ffffff',
-  black: '#000000'
+  orange: {hex: '#ffa347', key: '00'},
+  red: {hex: '#f83800', key: '01'},
+  brown: {hex: '#af7f00', key: '02'},
+  blue: {hex: '#0099ff', key: '03'},
+  green: {hex: '#00cc66', key: '04'},
+  black: {hex: '#000000', key: '05'}
 }
 
 function App() {
@@ -40,10 +39,10 @@ function App() {
         image: mario_overalls,
         colors: {
           type: 'hex',
-          targetColor: colors.red,
-          replaceColor: new_color
+          targetColor: colors.red.hex,
+          replaceColor: new_color.hex
         },
-        deltaE: 1.0
+        deltaE: 20
       }).then((jimp_obj) => {
         jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
               setOverallsImage(src);
@@ -58,10 +57,10 @@ function App() {
             image: mario_hairShirtBoots,
             colors: {
             type: 'hex',
-            targetColor: colors.brown,
-            replaceColor: new_color
+            targetColor: colors.brown.hex,
+            replaceColor: new_color.hex
             },
-            deltaE: 1.0
+          deltaE: 20
         }).then((jimp_obj) => {
             jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
                 setHairShirtBootsImage(src);
@@ -77,10 +76,10 @@ function App() {
             image: mario_skin,
             colors: {
             type: 'hex',
-            targetColor: colors.orange,
-            replaceColor: new_color
+            targetColor: colors.orange.hex,
+            replaceColor: new_color.hex
             },
-            deltaE: 1.0
+          deltaE: 20
         }).then((jimp_obj) => {
             jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
                 setSkinImage(src);
@@ -94,13 +93,10 @@ function App() {
 
 
   function updateBarcode(new_color) {
-    function getKeyByValue(object, value) {
-      return Object.keys(object).find(key => object[key] === value);
-    }
-
-    const barcodeString = `${getKeyByValue(colors, new_color)}${getKeyByValue(colors, hairShirtBootsColor)}${getKeyByValue(colors, skinColor)}`
+    const barcodeString = `${overallsColor.key}${hairShirtBootsColor.key}${skinColor.key}`
     JsBarcode("#barcode", barcodeString)
 
+    console.log(overallsColor)
     console.log(barcodeString)
   }
 
