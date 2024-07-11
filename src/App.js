@@ -29,56 +29,46 @@ function App() {
   const [imageData, setImageData] = useState('');
 
   async function updateColors(target) {
-    const new_color = randomColor();
 
     if (target === 'overalls') {
+      const new_color = getNextColor(overallsColor)
+
       replaceColor({
-        image: mario_overalls,
-        colors: {
-          type: 'hex',
-          targetColor: colors.red.hex,
-          replaceColor: new_color.hex
-        },
-        deltaE: 20
+        image: mario_overalls, colors: {
+          type: 'hex', targetColor: colors.red.hex, replaceColor: new_color.hex
+        }, deltaE: 20
       }).then((jimp_obj) => {
         jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
-              setOverallsImage(src);
-            }
-        )
+          setOverallsImage(src);
+        })
       })
 
       setOverallsColor(new_color);
     } else if (target === 'hairShirtBoots') {
+      const new_color = getNextColor(hairShirtBootsColor)
+
       replaceColor({
-        image: mario_hairShirtBoots,
-        colors: {
-          type: 'hex',
-          targetColor: colors.brown.hex,
-          replaceColor: new_color.hex
-        },
-        deltaE: 20
+        image: mario_hairShirtBoots, colors: {
+          type: 'hex', targetColor: colors.brown.hex, replaceColor: new_color.hex
+        }, deltaE: 20
       }).then((jimp_obj) => {
         jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
-              setHairShirtBootsImage(src);
-            }
-        )
+          setHairShirtBootsImage(src);
+        })
       })
 
       setHairShirtBootsColor(new_color);
     } else if (target === 'skin') {
+      const new_color = getNextColor(skinColor)
+
       replaceColor({
-        image: mario_skin,
-        colors: {
-          type: 'hex',
-          targetColor: colors.orange.hex,
-          replaceColor: new_color.hex
-        },
-        deltaE: 20
+        image: mario_skin, colors: {
+          type: 'hex', targetColor: colors.orange.hex, replaceColor: new_color.hex
+        }, deltaE: 20
       }).then((jimp_obj) => {
         jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
-              setSkinImage(src);
-            }
-        )
+          setSkinImage(src);
+        })
       })
 
       setSkinColor(new_color);
@@ -93,8 +83,12 @@ function App() {
     console.log(barcodeString)
   }
 
-  function randomColor() {
-    return Object.values(colors)[Math.floor(Math.random() * Object.keys(colors).length)];
+  function getNextColor(currentColor) {
+    let currentKey = Number(currentColor.key);
+    let nextKey = (currentKey + 1) % Object.keys(colors).length;
+    nextKey = String(nextKey).padStart(2, '0');
+
+    return Object.values(colors).find(color => color.key === nextKey);
   }
 
   useEffect(() => {
@@ -106,17 +100,15 @@ function App() {
     updateBarcode()
   }, [overallsImage, hairShirtBootsImage, skinImage])
 
-  return (
-      <div className="App">
-        <img src={imageData}/>
-        <div/>
-        <button onClick={() => updateColors('overalls')}>Change Overalls Color</button>
-        <button onClick={() => updateColors('hairShirtBoots')}>Change Hair, Shirt, Boots Color</button>
-        <button onClick={() => updateColors('skin')}>Change skin Color</button>
-        <div/>
-        <svg id="barcode"></svg>
-      </div>
-  );
+  return (<div className="App">
+    <img src={imageData}/>
+    <div/>
+    <button onClick={() => updateColors('overalls')}>Next Color: Overalls</button>
+    <button onClick={() => updateColors('hairShirtBoots')}>Next Color: Hair, Shirt, Boots</button>
+    <button onClick={() => updateColors('skin')}>Next Color: Skin</button>
+    <div/>
+    <svg id="barcode"></svg>
+  </div>);
 }
 
 export default App;
