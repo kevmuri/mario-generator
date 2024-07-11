@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import {useEffect, useState} from "react";
 import replaceColor from "replace-color";
@@ -27,9 +26,7 @@ function App() {
   const [hairShirtBootsImage, setHairShirtBootsImage] = useState(mario_hairShirtBoots);
   const [skinImage, setSkinImage] = useState(mario_skin);
 
-
   const [imageData, setImageData] = useState('');
-  const [barcodeData, setBarcodeData] = useState('0');
 
   async function updateColors(target) {
     const new_color = randomColor();
@@ -51,69 +48,53 @@ function App() {
       })
 
       setOverallsColor(new_color);
-    }
-    else if (target === 'hairShirtBoots') {
-        replaceColor({
-            image: mario_hairShirtBoots,
-            colors: {
-            type: 'hex',
-            targetColor: colors.brown.hex,
-            replaceColor: new_color.hex
-            },
-          deltaE: 20
-        }).then((jimp_obj) => {
-            jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
-                setHairShirtBootsImage(src);
-                }
-            )
-        })
+    } else if (target === 'hairShirtBoots') {
+      replaceColor({
+        image: mario_hairShirtBoots,
+        colors: {
+          type: 'hex',
+          targetColor: colors.brown.hex,
+          replaceColor: new_color.hex
+        },
+        deltaE: 20
+      }).then((jimp_obj) => {
+        jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
+              setHairShirtBootsImage(src);
+            }
+        )
+      })
 
-        setHairShirtBootsColor(new_color);
-    }
+      setHairShirtBootsColor(new_color);
+    } else if (target === 'skin') {
+      replaceColor({
+        image: mario_skin,
+        colors: {
+          type: 'hex',
+          targetColor: colors.orange.hex,
+          replaceColor: new_color.hex
+        },
+        deltaE: 20
+      }).then((jimp_obj) => {
+        jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
+              setSkinImage(src);
+            }
+        )
+      })
 
-    else if (target === 'skin') {
-        replaceColor({
-            image: mario_skin,
-            colors: {
-            type: 'hex',
-            targetColor: colors.orange.hex,
-            replaceColor: new_color.hex
-            },
-          deltaE: 20
-        }).then((jimp_obj) => {
-            jimp_obj.getBase64(jimp_obj.getMIME(), (err, src) => {
-                setSkinImage(src);
-                }
-            )
-        })
-
-        setSkinColor(new_color);
+      setSkinColor(new_color);
     }
   }
 
 
-  function updateBarcode(new_color) {
+  function updateBarcode() {
     const barcodeString = `${overallsColor.key}${hairShirtBootsColor.key}${skinColor.key}`
     JsBarcode("#barcode", barcodeString)
 
-    console.log(overallsColor)
     console.log(barcodeString)
   }
 
   function randomColor() {
-      return Object.values(colors)[Math.floor(Math.random() * Object.keys(colors).length)];
-  }
-
-  async function getBase64(image) {
-    const response = await fetch(image);
-    const imageBlob = await response.blob();
-
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(imageBlob);
-    });
+    return Object.values(colors)[Math.floor(Math.random() * Object.keys(colors).length)];
   }
 
   useEffect(() => {
@@ -122,7 +103,7 @@ function App() {
 
   useEffect(() => {
     mergeImages([overallsImage, hairShirtBootsImage, skinImage]).then(setImageData)
-    updateBarcode(overallsColor)
+    updateBarcode()
   }, [overallsImage, hairShirtBootsImage, skinImage])
 
   return (
